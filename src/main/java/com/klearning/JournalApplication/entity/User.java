@@ -1,7 +1,9 @@
 package com.klearning.JournalApplication.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 
 @Document(collection = "users")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -22,6 +26,10 @@ public class User {
     @Indexed(unique = true)
     @NonNull
     private String userName;
+
+    private String email;
+
+    private boolean sentimentAnalysis;
 
     @NonNull
     private String password;
