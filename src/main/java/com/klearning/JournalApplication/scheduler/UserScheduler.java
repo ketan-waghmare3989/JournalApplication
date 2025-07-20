@@ -1,5 +1,6 @@
 package com.klearning.JournalApplication.scheduler;
 
+import com.klearning.JournalApplication.cache.AppCache;
 import com.klearning.JournalApplication.entity.JournalEntity;
 import com.klearning.JournalApplication.entity.User;
 import com.klearning.JournalApplication.service.EmailService;
@@ -26,6 +27,9 @@ public class UserScheduler {
     @Autowired
     private SentimentAnalysisService sentimentAnalysisService;
 
+    @Autowired
+    private AppCache appCache;
+
     @Scheduled(cron = "0 0 9 * * SUN")
     public void fetchUsersAndSendSaEmail() {
         List<User> users = userRepository.getUserSA();
@@ -36,6 +40,10 @@ public class UserScheduler {
             String sentiment = sentimentAnalysisService.getSentiment(entry);
             emailService.sendEmail(user.getEmail(), "Sentiment for last 7 days", sentiment);
         }
+    }
 
+    @Scheduled(cron = "0 0/10 * ? * *")
+    public void clearAppCache() {
+        appCache.init();
     }
 }
